@@ -15,6 +15,7 @@
 <a href="#skills"><strong>Skills</strong></a> ·
 <a href="#install"><strong>Install</strong></a> ·
 <a href="#usage"><strong>Usage</strong></a> ·
+<a href="#examples"><strong>Examples</strong></a> ·
 <a href="#philosophy"><strong>Philosophy</strong></a> ·
 <a href="#contributing"><strong>Contributing</strong></a>
 
@@ -22,7 +23,7 @@
 <br />
 
 <a href="./LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue?style=flat-square&labelColor=18181b&color=6172f3" alt="MIT License" /></a>
-<a href="#skills"><img src="https://img.shields.io/badge/skills-12-blue?style=flat-square&labelColor=18181b&color=8b5cf6" alt="12 Skills" /></a>
+<a href="#skills"><img src="https://img.shields.io/badge/skills-13-blue?style=flat-square&labelColor=18181b&color=8b5cf6" alt="13 Skills" /></a>
 <a href="https://docs.anthropic.com/en/docs/claude-code"><img src="https://img.shields.io/badge/Claude_Code-compatible-blue?style=flat-square&labelColor=18181b&color=d4a574" alt="Claude Code" /></a>
 <a href="https://github.com/emotixco/claude-skills-founder/stargazers"><img src="https://img.shields.io/github/stars/emotixco/claude-skills-founder?style=flat-square&labelColor=18181b&color=6172f3" alt="GitHub Stars" /></a>
 
@@ -31,7 +32,7 @@
 <br />
 
 > [!NOTE]
-> Every Claude Code skills pack out there is developer-focused — code review, git workflows, security audits. **This one is for the founder sitting in a repo at 2am**, trying to figure out if their idea is worth building.
+> Most Claude Code skill packs are developer tools: code review, git workflows, security audits. **This one is for the founder sitting in a repo at 2am**, trying to figure out if their idea is worth building.
 
 We built these at [Emotix](https://emotix.co?utm_source=github&utm_medium=oss&utm_campaign=claude-skills-founder) while running our own startup. They encode the frameworks, questions, and patterns we wish we had on day one.
 
@@ -43,7 +44,7 @@ We built these at [Emotix](https://emotix.co?utm_source=github&utm_medium=oss&ut
 <tr>
 <td width="50%">
 
-### Validation & Research
+### Validation and research
 
 | Command | What it does |
 |:--------|:------------|
@@ -56,7 +57,7 @@ We built these at [Emotix](https://emotix.co?utm_source=github&utm_medium=oss&ut
 </td>
 <td width="50%">
 
-### Strategy & Growth
+### Strategy and growth
 
 | Command | What it does |
 |:--------|:------------|
@@ -71,7 +72,7 @@ We built these at [Emotix](https://emotix.co?utm_source=github&utm_medium=oss&ut
 <tr>
 <td colspan="2">
 
-### Fundraising & Metrics
+### Fundraising and metrics
 
 | Command | What it does |
 |:--------|:------------|
@@ -83,50 +84,68 @@ We built these at [Emotix](https://emotix.co?utm_source=github&utm_medium=oss&ut
 </tr>
 </table>
 
-Every skill takes natural language input and returns structured, actionable output — not generic advice.
+Every skill takes plain-language input and returns scorecards, tables, and checklists you can act on.
+
+### Skills that build on each other
+
+Each skill saves its output to a `founder/` folder in your project and reads what earlier skills saved. Run `/founder:competitor-matrix` once, and `/founder:pricing-strategy` and `/founder:pitch-deck` reuse its sourced competitor prices instead of starting over.
+
+```
+founder/
+├── facts.md               # what you told the skills: stage, metrics, team, the raise
+├── validate-idea.md
+├── competitor-matrix.md
+├── pricing-strategy.md
+└── ...
+```
+
+Commit the folder to keep a history of how your thinking changed, or add it to `.gitignore` to keep it private.
+
+Facts about the outside world, such as competitor prices, funding rounds, market sizes, and benchmarks, come with a source link. When a skill can't find one, it says "Estimate" or "Not found" instead of guessing. Your own metrics, customer quotes, and testimonials are never invented: missing ones show up as `[placeholders]` for you to fill in.
 
 <br />
 
 ## Install
 
 <details open>
-<summary><strong>Option 1 — Add to your project</strong> (recommended)</summary>
+<summary><strong>Option 1: plugin</strong> (recommended)</summary>
 
 <br />
 
-```bash
-# From your project root
-git clone https://github.com/emotixco/claude-skills-founder.git /tmp/claude-skills-founder
-cp -r /tmp/claude-skills-founder/commands/ .claude/commands/founder/
-rm -rf /tmp/claude-skills-founder
+Inside Claude Code:
+
+```
+/plugin marketplace add emotixco/claude-skills-founder
+/plugin install founder@emotix
 ```
 
-Skills become available as `/founder:product-brief`, `/founder:competitor-matrix`, etc.
+Skills become available as `/founder:validate-idea`, `/founder:pricing-strategy`, and so on. Update later with `/plugin marketplace update emotix`. The skill descriptions add about 1,100 tokens to each session. A skill's full instructions load only when you run it.
 
 </details>
 
 <details>
-<summary><strong>Option 2 — Add globally</strong> (available in all projects)</summary>
+<summary><strong>Option 2: clone</strong> (update with git pull)</summary>
 
 <br />
 
 ```bash
-git clone https://github.com/emotixco/claude-skills-founder.git /tmp/claude-skills-founder
-cp -r /tmp/claude-skills-founder/commands/ ~/.claude/commands/founder/
-rm -rf /tmp/claude-skills-founder
+git clone https://github.com/emotixco/claude-skills-founder.git ~/.claude/skills/founder
+```
+
+Claude Code loads the folder as a plugin on the next session, with the same `/founder:` names. To update:
+
+```bash
+git -C ~/.claude/skills/founder pull
 ```
 
 </details>
 
 <details>
-<summary><strong>Option 3 — Clone and symlink</strong> (auto-updates with git pull)</summary>
+<summary><strong>Upgrading from v1</strong></summary>
 
 <br />
 
-```bash
-git clone https://github.com/emotixco/claude-skills-founder.git ~/claude-skills-founder
-ln -s ~/claude-skills-founder/commands ~/.claude/commands/founder
-```
+v1 installed flat files into `.claude/commands/founder/`. Delete that folder (or the symlink, if you used the v1 symlink option) before installing v2, or you will see every skill twice. It is either `~/.claude/commands/founder` or `.claude/commands/founder` inside the project where you installed it.
 
 </details>
 
@@ -152,26 +171,34 @@ Open Claude Code and type any skill with your context:
 > /founder:pitch-deck Pre-seed raise, $500K, AI competitor analysis for founders, 200 beta users, $2K MRR
 ```
 
+Run a skill with no input and it asks for what it needs.
+
 > [!TIP]
-> Be as specific as possible. The more context you give, the better the output. Include your stage, metrics, constraints, and what you've already tried.
+> Be as specific as possible. Include your stage, metrics, constraints, and what you've already tried. Facts you give once are saved to `founder/facts.md`, so you don't have to repeat them.
+
+<br />
+
+## Examples
+
+[`examples/restaurant-inventory/`](./examples/restaurant-inventory/) has unedited output from three skills run in sequence on one idea, including the `founder/` files they wrote. Read it before installing to see what you get.
 
 <br />
 
 ## What each skill produces
 
 <details>
-<summary><strong>/validate-idea</strong> — The first skill you should run</summary>
+<summary><strong>/validate-idea</strong> · the first skill you should run</summary>
 
 <br />
 
-Scores your idea across 7 dimensions (problem severity, market size, willingness to pay, competition gap, distribution, timing, founder fit) and gives a verdict: **build**, **pivot**, or **kill**.
+Scores your idea on 7 dimensions (problem severity, market size, willingness to pay, competition gap, distribution, timing, founder fit) and gives a verdict: **build**, **pivot**, or **kill**.
 
 Includes 3 specific validation experiments you can run in under 2 weeks for under $200.
 
 </details>
 
 <details>
-<summary><strong>/product-brief</strong> — From idea to structured document</summary>
+<summary><strong>/product-brief</strong> · from idea to structured document</summary>
 
 <br />
 
@@ -180,25 +207,25 @@ Turns a one-sentence idea into a structured brief: problem statement, target aud
 </details>
 
 <details>
-<summary><strong>/competitor-matrix</strong> — Know your market</summary>
+<summary><strong>/competitor-matrix</strong> · know your market</summary>
 
 <br />
 
-Identifies 5-8 competitors and builds a feature comparison table. Finds positioning gaps no one is filling, ranks threats, and recommends a niche to own.
+Researches 5-8 competitors on the web and builds a feature comparison table, with a source link for every price and funding round. Finds positioning gaps no one is filling, ranks threats, and recommends a niche to own.
 
 </details>
 
 <details>
-<summary><strong>/persona-gen</strong> — Real people, not demographics</summary>
+<summary><strong>/persona-gen</strong> · real people, not demographics</summary>
 
 <br />
 
-Creates 3 distinct personas with day-in-the-life narratives, direct quotes, current workarounds, and decision-making patterns. Includes a priority matrix showing which persona to build for first.
+Creates 3 distinct personas with a day in the life, pain points written the way they would say them, current workarounds, and buying behavior. Includes a priority matrix showing which persona to build for first. Personas are marked as hypotheses until interviews confirm them.
 
 </details>
 
 <details>
-<summary><strong>/mvp-scope</strong> — Cut ruthlessly</summary>
+<summary><strong>/mvp-scope</strong> · cut ruthlessly</summary>
 
 <br />
 
@@ -207,16 +234,16 @@ Takes your feature wishlist and triages into Must Have / Should Have / Won't Hav
 </details>
 
 <details>
-<summary><strong>/pricing-strategy</strong> — Beyond "just charge more"</summary>
+<summary><strong>/pricing-strategy</strong> · beyond "just charge more"</summary>
 
 <br />
 
-Evaluates 6 pricing models, designs 3 tiers with specific prices and features, checks unit economics, and applies pricing psychology (anchoring, decoy effect, annual framing). Includes launch vs. scale pricing and grandfathering policy.
+Evaluates 6 pricing models, designs 3 tiers with specific prices and features, checks unit economics, and anchors against competitor prices linked to their pricing pages. Includes anchoring, decoy, and annual framing, plus launch vs. scale pricing and grandfathering.
 
 </details>
 
 <details>
-<summary><strong>/go-to-market</strong> — Week-by-week launch plan</summary>
+<summary><strong>/go-to-market</strong> · week-by-week launch plan</summary>
 
 <br />
 
@@ -225,16 +252,16 @@ Pre-launch audience building, launch day platform strategy (Product Hunt, HN, Re
 </details>
 
 <details>
-<summary><strong>/pitch-deck</strong> — Investor-ready structure</summary>
+<summary><strong>/pitch-deck</strong> · investor-ready structure</summary>
 
 <br />
 
-12-slide outline with exact content for each slide: title, problem, solution, demo, market size, traction, business model, competition, GTM, team, the ask, and closing. Plus appendix slides for Q&A.
+12-slide outline. Every slide gets a headline that states the takeaway, the content, a visual, and speaker notes. Missing numbers become placeholders, collected in a "numbers to find" list at the end. Plus appendix slides for Q&A.
 
 </details>
 
 <details>
-<summary><strong>/fundraise-prep</strong> — Are you actually ready?</summary>
+<summary><strong>/fundraise-prep</strong> · are you actually ready?</summary>
 
 <br />
 
@@ -243,25 +270,25 @@ Readiness scorecard, round sizing with recommended instrument (SAFE, note, or pr
 </details>
 
 <details>
-<summary><strong>/landing-page</strong> — Copy that converts</summary>
+<summary><strong>/landing-page</strong> · copy that converts</summary>
 
 <br />
 
-Complete copy for every section: hero (headline, subhead, CTA), problem, solution, how it works, social proof, pricing preview, FAQ, and final CTA. Includes SEO metadata. Written for conversion, not cleverness.
+Copy for every section: hero, problem, solution, how it works, social proof, pricing preview, FAQ, and final call to action, plus SEO metadata. Testimonials are left as placeholders that say what a strong quote would cover, because invented ones are false advertising.
 
 </details>
 
 <details>
-<summary><strong>/user-interviews</strong> — Ask the right questions</summary>
+<summary><strong>/user-interviews</strong> · ask the right questions</summary>
 
 <br />
 
-Interview script following The Mom Test methodology — no leading questions, no hypotheticals. Includes screening criteria, problem exploration, solution exploration, and a reaction phase. Analysis framework for synthesizing 5-8 interviews.
+Interview script that follows The Mom Test: no leading questions, no hypotheticals. Includes screening criteria, problem exploration, solution exploration, and a reaction phase. Analysis framework for synthesizing 5-8 interviews.
 
 </details>
 
 <details>
-<summary><strong>/metrics-dashboard</strong> — Five metrics, not fifty</summary>
+<summary><strong>/metrics-dashboard</strong> · five metrics, not fifty</summary>
 
 <br />
 
@@ -270,11 +297,11 @@ Defines exactly 5 metrics tailored to your stage (not 15 vanity metrics). Each h
 </details>
 
 <details>
-<summary><strong>/email-sequence</strong> — Ready to send</summary>
+<summary><strong>/email-sequence</strong> · ready to send</summary>
 
 <br />
 
-5-7 emails for onboarding or re-engagement. Complete copy: subject line with A/B variant, preview text, body under 150 words, and one CTA. Timing, segmentation, and performance benchmarks included.
+5-7 emails for onboarding or re-engagement. Complete copy: subject line with an A/B variant, preview text, a body under 150 words, and one call to action. Timing, segmentation, and targets from published benchmarks included.
 
 </details>
 
@@ -284,32 +311,39 @@ Defines exactly 5 metrics tailored to your stage (not 15 vanity metrics). Each h
 
 <table>
 <tr>
-<td width="25%" align="center">
+<td width="20%" align="center">
 
 **Specific**
 
-"Post a Show HN on Tuesday at 9am ET" — not "post on social media"
+"Post a Show HN on Tuesday at 9am ET", not "post on social media"
 
 </td>
-<td width="25%" align="center">
+<td width="20%" align="center">
 
 **Opinionated**
 
-"Kill this feature" — not "consider deprioritizing"
+"Kill this feature", not "consider deprioritizing"
 
 </td>
-<td width="25%" align="center">
+<td width="20%" align="center">
+
+**Sourced**
+
+Every competitor price and market number links to where it came from
+
+</td>
+<td width="20%" align="center">
 
 **Brief**
 
 Every skill has a word limit. Brevity forces clarity.
 
 </td>
-<td width="25%" align="center">
+<td width="20%" align="center">
 
 **Structured**
 
-Scorecards, matrices, checklists — not walls of text.
+Scorecards, matrices, checklists. No walls of text.
 
 </td>
 </tr>
@@ -323,20 +357,23 @@ Have a skill idea? [Open an issue](https://github.com/emotixco/claude-skills-fou
 
 **To add a new skill:**
 
-1. Create a `.md` file in `commands/`
-2. Add YAML frontmatter with `description` and `argument-hint`
-3. Write clear instructions with sections, rules, and output format
+1. Create `skills/<name>/SKILL.md`
+2. Add frontmatter with `name`, `description`, `argument-hint`, and `allowed-tools`
+3. Add the "Before you start" block every skill uses: which `founder/` files it reads, what it needs, and where it saves
 4. Keep the expected output under 2000 words
-5. Test with 3 different inputs to make sure it generalizes
+5. Test it with 3 different inputs: `claude --plugin-dir .`
+6. Run `claude plugin validate .` before opening the PR
+
+Rules that apply to every skill, such as sourcing and writing style, live in [`shared/conventions.md`](./shared/conventions.md). Change them there, not in each skill.
 
 > [!IMPORTANT]
-> We're looking for skills that fill genuine gaps in the founder workflow — not developer tools repackaged with startup vocabulary.
+> We're looking for skills that fill genuine gaps in the founder workflow, not developer tools repackaged with startup vocabulary.
 
 <br />
 
 ## License
 
-[MIT](./LICENSE) — use these however you want.
+[MIT](./LICENSE). Use these however you want.
 
 <br />
 
