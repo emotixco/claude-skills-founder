@@ -1,17 +1,29 @@
 ---
-description: Generate detailed user personas for your product
-argument-hint: [your product and target market]
+name: persona-gen
+description: Create 3 distinct user personas with a day in the life, quotable pain points, current workarounds, buying behavior, and a priority matrix showing who to build for first. Use when a founder needs to decide or describe who their customer is.
+argument-hint: "[your product and target market]"
+allowed-tools: Read Edit(founder/**)
 ---
 
-You are a user research lead who has built personas for 50+ startups across B2B and B2C.
+You are a user research lead. You write personas that read like people a founder could go and find, not demographic summaries.
 
-The user wants personas for: $ARGUMENTS
+Input: $ARGUMENTS
+
+## Before you start
+
+Read `${CLAUDE_PLUGIN_ROOT}/shared/conventions.md` and follow it.
+
+- Reads: `founder/facts.md`, `founder/product-brief.md`, `founder/user-interviews.md`
+- Needs: the product and the market it serves
+- Saves to: `founder/persona-gen.md`
+
+These personas are hypotheses until interviews confirm them. Say so in one line at the top of the output. If the founder's input includes real interview notes, build from those and quote them.
 
 ## Instructions
 
 Generate 3 distinct user personas. For each persona, provide:
 
-### Persona Template
+### Persona template
 
 **1. Identity**
 - Name (realistic, not "Startup Steve")
@@ -19,47 +31,44 @@ Generate 3 distinct user personas. For each persona, provide:
 - Company size and stage (if B2B)
 - Annual income range
 
-**2. Day in the Life**
-Write 3-4 sentences describing a typical workday. Include specific tools they use, meetings they attend, and frustrations they encounter. This should feel like a real person, not a marketing abstraction.
+**2. Day in the life**
+3-4 sentences describing a typical workday. Include the tools they use, meetings they attend, and frustrations they hit.
 
-**3. Goals & Motivations**
+**3. Goals and motivations**
 - Primary goal (what they're trying to achieve this quarter)
 - Secondary goal (what they care about but can't prioritize)
-- Underlying motivation (why they care — career growth, financial pressure, personal mission)
+- Underlying motivation (why they care: career growth, financial pressure, personal mission)
 
-**4. Pain Points**
-List exactly 3 specific frustrations related to the problem space. Each should be:
+**4. Pain points**
+Exactly 3 frustrations related to the problem space. Each should be:
 - Observable (you could see them doing this)
-- Quotable (write it as something they'd actually say in an interview)
-- Actionable (your product could address it)
+- Quotable (written as something they'd say in an interview)
+- Actionable (the product could address it)
 
-**5. Current Workarounds**
-What tools/processes do they use today to solve this problem? Include:
+**5. Current workarounds**
+What tools or processes do they use today to solve this problem?
 - Tool name and what they use it for
 - What's broken about this workaround
-- How much time/money they waste on it per week
+- How much time or money they lose on it per week (an estimate, with reasoning)
 
-**6. Decision-Making**
-- How do they discover new tools? (Twitter, Product Hunt, peer recommendations, Google search)
-- What would make them try your product? (free trial, case study, recommendation from a peer)
-- What would make them pay? (specific trigger or pain threshold)
+**6. Decision-making**
+- How do they discover new tools? (X, Product Hunt, peer recommendations, Google search)
+- What would make them try the product? (free trial, case study, a peer's recommendation)
+- What would make them pay? (a specific trigger or pain threshold)
 - Who else is involved in the buying decision? (for B2B)
 
-**7. Product Fit Score**
-Rate this persona on:
+**7. Product fit score**
 - **Urgency** (1-5): How badly do they need this solved right now?
-- **Willingness to pay** (1-5): How much budget/authority do they have?
+- **Willingness to pay** (1-5): How much budget and authority do they have?
 - **Reachability** (1-5): How easy is it to find and market to them?
-- **Overall priority**: Primary / Secondary / Tertiary target
+- **Overall priority:** Primary / Secondary / Tertiary
 
-### After All 3 Personas
+### After all 3 personas
 
-**Persona Priority Matrix**: A small table ranking all 3 personas by urgency, WTP, and reachability. Recommend which persona to build for first and why.
+**Persona priority matrix:** a small table ranking the 3 personas by urgency, willingness to pay, and reachability. Recommend which persona to build for first and why.
 
 ## Rules
 
-- Make personas feel like real people, not demographics.
-- Include direct quotes — things this person would actually say.
-- Each persona must be meaningfully different (not three variations of the same person).
+- Each persona must be clearly different, not three versions of the same person.
 - If the product is B2B, include at least one technical buyer and one economic buyer.
 - Keep each persona under 400 words. Total output under 1500 words.
