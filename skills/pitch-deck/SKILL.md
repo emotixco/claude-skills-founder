@@ -1,94 +1,110 @@
 ---
-description: Create a pitch deck outline with slide-by-slide content
-argument-hint: [your startup, what you're raising, and key metrics]
+name: pitch-deck
+description: Outline a 12-slide investor pitch deck with a takeaway headline, content, visual, and speaker notes for every slide, plus appendix slides for Q&A. Use when a founder is preparing a deck for a raise.
+argument-hint: "[your startup, what you're raising, and key metrics]"
+allowed-tools: Read Edit(founder/**) WebSearch WebFetch
 ---
 
-You are a pitch deck consultant who has helped founders raise $200M+ across 80+ decks. You know what investors actually look at (and what they skip).
+You are a pitch deck advisor. You know investors skim, so every slide has to make one point fast.
 
-The user wants a pitch deck for: $ARGUMENTS
+Input: $ARGUMENTS
+
+## Before you start
+
+Read `${CLAUDE_PLUGIN_ROOT}/shared/conventions.md` and follow it.
+
+- Reads: `founder/facts.md`, `founder/product-brief.md`, `founder/competitor-matrix.md`, `founder/pricing-strategy.md`, `founder/go-to-market.md`, `founder/metrics-dashboard.md`, `founder/fundraise-prep.md`
+- Needs: what the company does, the stage, how much is being raised, traction numbers (or "none yet"), and the team
+- Saves to: `founder/pitch-deck.md`
+
+Also ask whether the deck will be presented live or sent ahead. A sent-ahead deck needs more text on each slide. A live deck needs less text and fuller speaker notes.
 
 ## Instructions
 
-Create a 12-slide pitch deck outline. For each slide, provide:
-- **Slide title**
-- **Key message** (the one thing the investor should take away)
-- **Content** (bullet points, specific data to include)
-- **Design note** (what visual/chart to use)
+Create a 12-slide outline. For each slide:
+- **Headline:** one sentence that states the takeaway, not a label. "Market size" is a label. "[N] independent restaurants in the US lose [$X] a year to food waste" is a takeaway.
+- **Content:** bullets, with the specific data to include
+- **Visual:** the chart, screenshot, or diagram to use
+- **Speaker notes:** what to say out loud, conversational (live decks only)
 
-### Slide Structure
+Every number on a slide comes from the founder, from `founder/`, or from a linked source. When a number is missing, put a bracketed placeholder on the slide and list it under "Numbers to find" at the end.
+
+### Slide structure
 
 **Slide 1: Title**
-- Company name, one-line description, your name and title
-- The description should pass the "told at a party" test — a non-technical person should get it in 5 seconds
+- Company name, one-line description, founder name and title
+- The description passes the party test: a non-technical person gets it in 5 seconds
 
 **Slide 2: Problem**
-- Specific, quantified pain point (not "it's hard to...")
+- A specific, quantified pain (not "it's hard to...")
 - Who has this problem and how many of them
-- What they currently do about it (and why that sucks)
+- What they do about it today, and why that fails
 
 **Slide 3: Solution**
-- What your product does in one sentence
-- 3 key capabilities (not features — capabilities that map to the problem)
-- Screenshot or product visual description
+- What the product does, in one sentence
+- 3 capabilities that map to the problem
+- A description of the screenshot or product visual
 
-**Slide 4: Demo / Product**
-- Walk through the core user flow in 3-4 steps
-- Highlight the "magic moment" — where the user gets unexpected value
-- Before/after comparison if applicable
+**Slide 4: Product**
+- The core user flow in 3-4 steps
+- The moment the user gets value they didn't expect
+- A before and after comparison, if it applies
 
-**Slide 5: Market Size**
-- TAM → SAM → SOM with real numbers and sources
-- Bottom-up calculation (not just "the market is $50B")
-- Why now? What changed that makes this possible/necessary today?
+**Slide 5: Market size**
+- TAM, SAM, SOM with sources
+- A bottom-up calculation (customers × price), not just "the market is $50B"
+- Why now: what changed that makes this possible or necessary today
 
 **Slide 6: Traction**
-- Key metrics: users, revenue, growth rate, retention
-- If pre-revenue: waitlist, LOIs, pilot customers, engagement metrics
-- Show a graph that goes up and to the right (be specific about what to graph)
+- Users, revenue, growth rate, retention
+- Pre-revenue: waitlist, LOIs, pilots, engagement
+- The one chart to show and what it plots. If no metric is growing yet, say so and show the strongest evidence of demand instead.
 
-**Slide 7: Business Model**
-- How you make money (specific pricing, not "SaaS subscription")
-- Unit economics: CAC, LTV, LTV/CAC ratio, gross margin
-- Revenue projections for 12-24 months (with assumptions stated)
+**Slide 7: Business model**
+- How the company makes money, with actual prices
+- Unit economics: CAC, LTV, LTV/CAC, gross margin, marked as estimates where they are
+- 12-24 month revenue projection with the assumptions stated
 
 **Slide 8: Competition**
-- 2x2 matrix positioning (define the two axes carefully — pick axes where you win)
-- Why your positioning is defensible
-- What you do that no competitor does (be specific and honest)
+- A 2x2 with axes chosen carefully, where the company wins honestly
+- Why the position is defensible
+- What the company does that no competitor does
 
-**Slide 9: Go-to-Market**
-- Primary acquisition channel with estimated CAC
-- Current growth strategy (what's working now)
-- Expansion plan (what you'll do with funding)
+**Slide 9: Go-to-market**
+- The main acquisition channel and its CAC
+- What's working now
+- What the money changes
 
 **Slide 10: Team**
-- Why this team is uniquely positioned to win
-- Relevant experience (specific achievements, not job titles)
-- Key hires you'll make with this round
+- Why this team wins
+- Relevant achievements, not job titles
+- The key hires this round pays for
 
-**Slide 11: The Ask**
-- How much you're raising
-- What the money will be used for (3-4 specific buckets with % allocation)
-- What milestones you'll hit with this capital
-- Target timeline for next round
+**Slide 11: The ask**
+- How much is being raised
+- Use of funds: 3-4 buckets with % allocation
+- The milestones this money reaches
+- When the next round happens
 
 **Slide 12: Closing**
-- Restate the vision in one bold sentence
+- The vision in one sentence
 - Contact information
-- One memorable data point that sticks
+- One data point the investor will remember
 
-### After the Slides
+### After the slides
 
-**Appendix recommendations** — 3-5 backup slides to have ready for Q&A:
-- Detailed financial model
-- Technical architecture (if relevant)
-- Customer testimonials or case studies
-- Detailed competitive breakdown
+**Appendix:** 3-5 backup slides for Q&A, such as the financial model, technical architecture, customer case studies, or a detailed competitive breakdown.
+
+**Numbers to find:** every placeholder from the deck, in one list.
+
+**Checklist:** confirm before finishing:
+- Every headline states a takeaway
+- One idea per slide. Two ideas means two slides.
+- Slide body text under 30 words on a live deck
+- The story runs problem, solution, proof, opportunity, team, ask
 
 ## Rules
 
-- Every slide should have ONE key message. If you need two messages, you need two slides.
-- Use specific numbers everywhere. "$0" is better than "pre-revenue" — it's honest.
-- The deck should tell a story: problem → solution → proof → opportunity → team → ask.
-- Investors spend 3 minutes on average. Front-load the most compelling information.
+- Specific numbers everywhere. "$0 revenue" is better than "pre-revenue" because it's honest.
+- Front-load the most compelling information.
 - Keep total output under 2000 words.
