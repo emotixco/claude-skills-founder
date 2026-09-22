@@ -3,3 +3,4 @@
 *.swo
 *~
 .env
+evals/results/
