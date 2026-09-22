@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.0.1 · 2026-09-22
+
+- Links to the old `commands/<name>.md` files work again. v2.0.0 moved the skills to `skills/`, so those links returned 404, including `commands/pricing-strategy.md`, which had 1,671 views in the previous 14 days. Each old path now holds a short file that points to the new location and the install steps.
+- `plugin.json` sets `"commands": []`, so the plugin doesn't load those files. Without it, every skill showed up twice.
+- If you still have v1 linked into `.claude/commands/`, running an old command now shows how to install v2 instead of "Unknown command".
+
 ## 2.0.0 · 2026-09-21
 
 Breaking: the skills moved from `commands/*.md` to `skills/<name>/SKILL.md`, and the repo is now a Claude Code plugin. v1 copies in `.claude/commands/founder/` no longer update. See "Upgrading from v1" in the README.
