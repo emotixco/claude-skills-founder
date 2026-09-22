@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.0.2 · 2026-09-22
+
+- Added `evals/`: 4 cases that compare the plugin with plain Claude using `claude plugin eval`. Results and what they show are in `evals/README.md`.
+- `shared/conventions.md` now tells the model to search its text for em and en dashes before replying. The evals caught the dash rule failing in 2 of 3 landing page runs. After the change, 5 of 5 were clean.
+
 ## 2.0.1 · 2026-09-22
 
 - Links to the old `commands/<name>.md` files work again. v2.0.0 moved the skills to `skills/`, so those links returned 404, including `commands/pricing-strategy.md`, which had 1,671 views in the previous 14 days. Each old path now holds a short file that points to the new location and the install steps.

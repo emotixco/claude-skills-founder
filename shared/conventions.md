@@ -42,7 +42,7 @@ Never invent the founder's metrics, customers, quotes, testimonials, logos, or t
 
 - Plain words. A number beats an adjective.
 - Sentence case for headings.
-- No em dashes or en dashes. Use a period, a comma, or a colon.
+- No em dashes or en dashes. Use a period, a comma, or a colon. Before you reply or save a file, search your text for the characters U+2014 and U+2013 and rewrite every sentence that contains one.
 - Don't use these words: delve, leverage, utilize, robust, seamless, cutting-edge, game-changer, unlock, empower, elevate, supercharge, revolutionize.
 - Don't end with a summary of what you already said.
 - Stay under the skill's word limit.

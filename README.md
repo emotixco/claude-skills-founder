@@ -182,6 +182,8 @@ Run a skill with no input and it asks for what it needs.
 
 [`examples/restaurant-inventory/`](./examples/restaurant-inventory/) has unedited output from three skills run in sequence on one idea, including the `founder/` files they wrote. Read it before installing to see what you get.
 
+[`evals/`](./evals/) tests the plugin against plain Claude with `claude plugin eval`. The latest results, including the cases where the plugin made no difference, are in [`evals/README.md`](./evals/README.md).
+
 <br />
 
 ## What each skill produces
@@ -363,6 +365,7 @@ Have a skill idea? [Open an issue](https://github.com/emotixco/claude-skills-fou
 4. Keep the expected output under 2000 words
 5. Test it with 3 different inputs: `claude --plugin-dir .`
 6. Run `claude plugin validate .` before opening the PR
+7. If the skill makes a promise (never invent X, always ask for Y), add a case under `evals/` that checks it
 
 Rules that apply to every skill, such as sourcing and writing style, live in [`shared/conventions.md`](./shared/conventions.md). Change them there, not in each skill.
 
