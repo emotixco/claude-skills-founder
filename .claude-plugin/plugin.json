@@ -1,6 +1,6 @@
 {
   "name": "founder",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "13 skills for startup founders: idea validation, competitor research, pricing, MVP scope, go-to-market, pitch decks, and fundraising. Outputs are saved to founder/ so each skill builds on the last.",
   "author": {
     "name": "Emotix",
@@ -8,5 +8,14 @@
   },
   "repository": "https://github.com/emotixco/claude-skills-founder",
   "license": "MIT",
-  "keywords": ["startup", "founder", "pitch-deck", "pricing", "go-to-market", "competitor-analysis", "product-management"]
+  "commands": [],
+  "keywords": [
+    "startup",
+    "founder",
+    "pitch-deck",
+    "pricing",
+    "go-to-market",
+    "competitor-analysis",
+    "product-management"
+  ]
 }
