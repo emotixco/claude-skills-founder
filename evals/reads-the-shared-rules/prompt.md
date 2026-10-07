@@ -1,5 +1,5 @@
 ---
-description: Checks that a skill opens the shared rules at ${CLAUDE_PLUGIN_ROOT} and follows a rule that lives only there.
+description: "Checks that the shared rules reach the run, by testing two that appear nowhere in the skill body, the saved file header and the no-dash rule. Since 2.1.4 the rules are inlined, so opening conventions.md is informational."
 tags: [plugin-root, conventions]
 max_turns: 20
 timeout_seconds: 600

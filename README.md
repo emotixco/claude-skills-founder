@@ -370,7 +370,7 @@ Have a skill idea? [Open an issue](https://github.com/emotixco/claude-skills-fou
 6. Run `claude plugin validate .` before opening the PR
 7. If the skill makes a promise (never invent X, always ask for Y), add a case under `evals/` that checks it
 
-Rules that apply to every skill, such as sourcing and writing style, live in [`shared/conventions.md`](./shared/conventions.md). Change them there, not in each skill.
+The nine rules every skill follows live in [`shared/core-rules.md`](./shared/core-rules.md) and are copied into each `SKILL.md` by `python3 shared/sync-core-rules.py`. Edit the source, run the script, and commit both. `python3 shared/sync-core-rules.py --check` fails if a skill is stale. The long form of the rules, with the reasoning, stays in [`shared/conventions.md`](./shared/conventions.md).
 
 > [!IMPORTANT]
 > We're looking for skills that fill genuine gaps in the founder workflow, not developer tools repackaged with startup vocabulary.

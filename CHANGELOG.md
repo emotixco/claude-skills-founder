@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.1.4 · 2026-10-07
+
+- The nine core rules now sit inline in every `SKILL.md`, between `<!-- core-rules:start -->` markers, instead of behind a Read of `shared/conventions.md`. `shared/core-rules.md` is the source and `shared/sync-core-rules.py` copies it into the skills, with `--check` for CI.
+- This did not do what it was meant to do. It was meant to make the rules reach Haiku 4.5, where the eval suite had measured them never loading. Inlined, Haiku still scores 0.00 on `reads-the-shared-rules`: no `founder/` file written, em dashes in every run, rules in context and ignored.
+- It stayed because it measured better elsewhere: on Opus 5 it removes a Read from every skill run, and `uses-saved-facts-without-reasking` dropped from 10 turns and $0.54 a run to 6 turns and $0.26, with the other eight cases holding their scores.
+- The `no-invented-proof-numbers` rubric now says it judges numbers, not qualitative claims like "setup takes minutes".
+
 ## 2.1.3 · 2026-10-07
 
 - New eval case `reads-the-shared-rules`: does a skill actually open `${CLAUDE_PLUGIN_ROOT}/shared/conventions.md` and follow two rules that live only there, the saved file header and the no-dash rule.
