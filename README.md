@@ -185,7 +185,7 @@ Run a skill with no input and it asks for what it needs.
 
 [`examples/restaurant-inventory/`](./examples/restaurant-inventory/) has unedited output from three skills run in sequence on one idea, including the `founder/` files they wrote. Read it before installing to see what you get.
 
-[`evals/`](./evals/) tests the plugin against plain Claude with `claude plugin eval`. The honest summary of the latest run: on Opus 5, 7 of 8 cases score the same with and without the plugin, because the model already keeps the placeholders and reads the saved files on its own. The exception is what happens when a new number contradicts a saved one: only the plugin updates `founder/facts.md`, so the next session doesn't inherit the stale figure. On Haiku 4.5 the plugin scores higher on 3 of the 8, and the skills often need calling by name. Full numbers, including per-run cost, are in [`evals/README.md`](./evals/README.md).
+[`evals/`](./evals/) tests the plugin against plain Claude with `claude plugin eval`. The honest summary of the latest run: on Opus 5, 8 of 9 cases score the same with and without the plugin, because the model already keeps the placeholders and reads the saved files on its own. The exception is what happens when a new number contradicts a saved one: only the plugin updates `founder/facts.md`, so the next session doesn't inherit the stale figure. On Haiku 4.5 the plugin scores higher on 3 of the 9, and the skills often need calling by name. Full numbers, including per-run cost, are in [`evals/README.md`](./evals/README.md).
 
 <br />
 
