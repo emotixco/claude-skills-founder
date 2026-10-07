@@ -173,6 +173,9 @@ Open Claude Code and type any skill with your context:
 
 Run a skill with no input and it asks for what it needs.
 
+> [!IMPORTANT]
+> If an install step fails or a skill invents a number, that's a bug and we want to hear it. [Open an issue](https://github.com/emotixco/claude-skills-founder/issues/new/choose) with your `claude --version` and what you ran. A broken install is silent otherwise: people try it once and leave.
+
 > [!TIP]
 > Be as specific as possible. Include your stage, metrics, constraints, and what you've already tried. Facts you give once are saved to `founder/facts.md`, so you don't have to repeat them.
 
@@ -182,7 +185,7 @@ Run a skill with no input and it asks for what it needs.
 
 [`examples/restaurant-inventory/`](./examples/restaurant-inventory/) has unedited output from three skills run in sequence on one idea, including the `founder/` files they wrote. Read it before installing to see what you get.
 
-[`evals/`](./evals/) tests the plugin against plain Claude with `claude plugin eval`. The latest results, including the cases where the plugin made no difference, are in [`evals/README.md`](./evals/README.md).
+[`evals/`](./evals/) tests the plugin against plain Claude with `claude plugin eval`. The honest summary of the latest run: on Opus 5, all 7 cases score the same with and without the plugin, because the model already keeps the placeholders and reads the saved files on its own. On Haiku 4.5 the plugin scores higher on 3 of the 7. Full numbers, including per-run cost, are in [`evals/README.md`](./evals/README.md).
 
 <br />
 

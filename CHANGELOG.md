@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.1.0 · 2026-10-07
+
+- Three new eval cases, two of which seed `founder/` first to test whether skills reuse saved work: `reuses-saved-competitor-prices`, `uses-saved-facts-without-reasking`, and `partial-numbers-stay-placeholders`. They need `--scaffold`.
+- `/founder:pitch-deck` now also triggers when you ask for one slide, such as the traction slide. The evals caught it staying silent on "write the traction slide for my pitch deck", and Claude invented a revenue figure without it.
+- Issue templates for a broken install and for a new skill idea, and a line in the README asking people to report both.
+- `evals/README.md` carries the full results for Opus 5 and Haiku 4.5, the per-run cost of running with the plugin, and the four grader bugs this suite has produced so far. On Opus 5 the plugin no longer changes any case outcome; on Haiku 4.5 it raises 3 of 7.
+
 ## 2.0.2 · 2026-09-22
 
 - Added `evals/`: 4 cases that compare the plugin with plain Claude using `claude plugin eval`. Results and what they show are in `evals/README.md`.

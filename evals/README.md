@@ -6,45 +6,90 @@ Each case checks one promise the plugin makes. `claude plugin eval` runs every c
 |---|---|
 | `landing-page-no-invented-testimonials` | A founder with no customers gets placeholder testimonials, no invented proof numbers, and no em dashes |
 | `pitch-deck-asks-before-inventing` | "Make me a pitch deck" with no details gets questions, not a deck about an invented company |
+| `partial-numbers-stay-placeholders` | The numbers the founder has are used; the revenue they don't have stays a placeholder |
 | `unknown-competitor-not-invented` | A competitor that doesn't exist ("Quibbleroot") is reported as not found, and real competitors come with links |
+| `reuses-saved-competitor-prices` | With a competitor matrix already in `founder/`, pricing reuses those prices instead of searching again |
+| `uses-saved-facts-without-reasking` | Facts already in `founder/facts.md` are used, not asked for a second time |
 | `unrelated-request-no-skill` | A plain coding request doesn't trigger any founder skill |
+
+The last three cases seed the workspace first, from `fixture.sh` in the case directory, so they need `--scaffold`. Two of them copy the real output in `examples/restaurant-inventory/` and rewrite its dates to today, so the saved prices stay inside the 30 day window the pricing skill re-checks after.
 
 ## Run them
 
 Needs Claude Code 2.1.269 or later. From the repo root:
 
 ```bash
-claude plugin eval . --allow-tools Write Edit WebSearch WebFetch --judge-model sonnet
+claude plugin eval . --scaffold --allow-tools Write Edit WebSearch WebFetch --judge-model sonnet
 ```
 
-A full run is 24 agent runs and cost $16.63 on 2026-09-22, most of it the web research case. To iterate on one case, run it once with the plugin only:
+A full run is 42 agent runs and cost $11.61 on 2026-10-07. To iterate on one case, run it once with the plugin only:
 
 ```bash
 claude plugin eval . --case pitch-deck-asks-before-inventing --runs 1 --ablation none --allow-tools Write Edit
 ```
 
+`--case` takes one glob and does not repeat: a second `--case` replaces the first.
+
 ## Results
 
-2026-09-22 · Claude Code 2.1.278 · Opus 5 as the agent, Sonnet as the judge · 3 runs per arm · plugin v2.0.1
+2026-10-07 · Claude Code 2.1.292 · Sonnet as the judge · 3 runs per arm · plugin v2.1.0
+
+### Opus 5 as the agent
 
 | Case | With plugin | Without | Δ |
 |---|---|---|---|
-| landing-page-no-invented-testimonials | 0.83 | 0.75 | +0.08 |
-| pitch-deck-asks-before-inventing | 1.00 | 0.44 | +0.56 |
+| landing-page-no-invented-testimonials | 1.00 | 1.00 | 0.00 |
+| partial-numbers-stay-placeholders | 1.00 | 1.00 | 0.00 |
+| pitch-deck-asks-before-inventing | 1.00 | 1.00 | 0.00 |
+| reuses-saved-competitor-prices | 1.00 | 1.00 | 0.00 |
 | unknown-competitor-not-invented | 1.00 | 1.00 | 0.00 |
 | unrelated-request-no-skill | 1.00 | 1.00 | 0.00 |
+| uses-saved-facts-without-reasking | 1.00 | 1.00 | 0.00 |
 
-What this says:
+**On Opus 5 the plugin changes nothing these cases can measure.** Plain Claude keeps the placeholders, says a fake competitor is fake, reads the files sitting in `founder/`, and asks before inventing a company. What the plugin still does is make that the default every time, in the same structure, saved to the same place. That is worth something, and it is not what these graders measure.
 
-- **The pitch deck case is where the plugin matters.** Without it, Claude wrote a template deck to a file in all 3 runs before asking for details. In one of them the judge ruled that the reply presented a deck instead of asking. With the plugin, Claude asked first and wrote nothing in all 3 runs.
-- **Opus 5 already refuses to invent testimonials and fake competitors.** Both arms passed those graders in every run, so those checks don't separate the arms today. They stay in the suite as regression checks for weaker models and future prompt changes.
-- **On the research case the plugin costs more for the same score:** 21 turns and $2.29 per run against 15 turns and $1.73 without it.
-- **The plugin broke its own dash rule.** 2 of 3 landing page runs had em dashes in the copy. `shared/conventions.md` now tells the model to search for them before it replies. After that change, 5 of 5 runs were clean (plugin only, 5 runs, $1.92).
+It also costs more. Per run, with the plugin against without:
+
+| Case | Turns | Cost |
+|---|---|---|
+| uses-saved-facts-without-reasking | 10 vs 4 | $0.54 vs $0.09 |
+| unknown-competitor-not-invented | 17 vs 6 | $1.20 vs $0.64 |
+| reuses-saved-competitor-prices | 9 vs 6 | $0.36 vs $0.17 |
+| landing-page-no-invented-testimonials | 8 vs 1 | $0.24 vs $0.12 |
+
+### Haiku 4.5 as the agent
+
+Same suite, same day, `--model haiku`, $2.89 for all 42 runs.
+
+| Case | With plugin | Without | Δ |
+|---|---|---|---|
+| landing-page-no-invented-testimonials | 0.75 | 0.50 | +0.25 |
+| reuses-saved-competitor-prices | 0.60 | 0.40 | +0.20 |
+| uses-saved-facts-without-reasking | 0.17 | 0.00 | +0.17 |
+| partial-numbers-stay-placeholders | 1.00 | 1.00 | 0.00 |
+| pitch-deck-asks-before-inventing | 1.00 | 1.00 | 0.00 |
+| unknown-competitor-not-invented | 1.00 | 1.00 | 0.00 |
+| unrelated-request-no-skill | 0.83 | 0.83 | 0.00 |
+
+Mean Δ +0.09. On the weaker model the rules do carry weight: every Haiku run without the plugin put invented proof numbers in the landing page copy, and 3 of 3 failed to read the saved competitor matrix at all. With the plugin it read the file in all 3 runs.
+
+The plugin doesn't rescue Haiku, though. `uses-saved-facts-without-reasking` scores 0.17 with the plugin, because Haiku reads `founder/facts.md` and still asks for facts that are in it.
+
+### What changed since 2026-09-22
+
+The first run of this suite, on Claude Code 2.1.278, showed `pitch-deck-asks-before-inventing` at Δ +0.56: plain Claude wrote a template deck to a file before asking. On 2.1.292 that no longer happens, and the case is Δ 0. The number wasn't wrong then and isn't wrong now. A plugin's measured value moves when the model and the harness underneath it move, which is the reason to keep the suite and re-run it rather than quote a number once.
+
+## Writing graders that don't lie to you
+
+Four of the five failures this suite has produced were grader bugs, not plugin bugs. The pattern each time:
+
+- **The dash check read the whole session** and matched Claude Code's own tool messages ("file state is current in your context"). Grade the final reply unless you mean the transcript.
+- **The plugin saves to `founder/` and replies with a summary**, while plain Claude puts everything in the reply. Grading only the reply punished the plugin for following its own rules, so the prompts now ask for the full output in the reply, which is what a user would say anyway.
+- **A rubric asked for more than the skill promises.** "Leaves revenue as a placeholder and asks for it" failed a reply that correctly left the placeholder. Grade the promise, nothing extra.
+- **A judge called the copy's own voice a testimonial.** The landing page skill writes pain points in the customer's words on purpose, so the rubric now says those are not testimonials.
 
 ## Cases worth adding
 
-The cases above mostly test what Opus 5 already does well. Cases more likely to show a difference:
-
-- The founder gives partial numbers and asks for a traction slide: are the missing ones left as placeholders?
-- `pricing-strategy` after `competitor-matrix` has run: are the saved prices reused instead of searched again?
-- A second skill run in the same project: does it read `founder/facts.md` instead of asking again?
+- A skill reading a `founder/` file that contradicts the prompt: the input should win, and the reply should say which saved line it replaced.
+- A second skill run after `pricing-strategy`, checking that the tier prices stay consistent across both files.
+- The same suite on Sonnet, to see where between Haiku and Opus the plugin stops changing the outcome.
