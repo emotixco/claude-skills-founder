@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.1.4 · 2026-10-07
+
+- Records a change that was tried and not shipped: inlining the nine core rules into all 13 skills, so a small model would not have to open `shared/conventions.md`. Haiku 4.5 scored 0.00 on `reads-the-shared-rules` either way, writing no `founder/` file and using em dashes in every run with the rules in its context, and Opus 5 held at 1.00. Fewer turns were seen afterwards, but a conventions change landed in the same window, so that cannot be credited to inlining. `evals/README.md` says where to look next instead.
+- The `no-invented-proof-numbers` rubric now says it judges numbers, not qualitative claims like "setup takes minutes", after a judge failed a correct run on one. Three re-runs pass.
+
 ## 2.1.3 · 2026-10-07
 
 - New eval case `reads-the-shared-rules`: does a skill actually open `${CLAUDE_PLUGIN_ROOT}/shared/conventions.md` and follow two rules that live only there, the saved file header and the no-dash rule.
