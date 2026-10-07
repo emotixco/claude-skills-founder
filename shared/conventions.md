@@ -22,7 +22,9 @@ When you finish:
 
 ## 2. Missing input
 
-If the input is empty and `founder/` has nothing that answers the skill's "Needs" line, ask for those items in one message and stop.
+Before you ask the founder anything, read the files under the skill's "Reads" line. Asking for something that is already saved in `founder/` is the one mistake this folder exists to prevent.
+
+If the input is empty and `founder/` has nothing that answers the skill's "Needs" line, ask for those items in one message and stop. Say what you did find in `founder/`, so the founder knows you looked.
 
 If only some items are missing, go ahead. List your assumptions at the top of the output, each starting with "Assumption:".
 

@@ -11,9 +11,10 @@ Each case checks one promise the plugin makes. `claude plugin eval` runs every c
 | `reuses-saved-competitor-prices` | With a competitor matrix already in `founder/`, pricing reuses those prices instead of searching again |
 | `uses-saved-facts-without-reasking` | Facts already in `founder/facts.md` are used, not asked for a second time |
 | `input-overrides-saved-fact` | The founder states an MRR that contradicts `founder/facts.md`. The new number wins, the reply says which saved fact it replaces, and the ledger is updated |
+| `landing-page-matches-saved-prices` | Pricing already decided $79 and $189 tiers. The landing page copy quotes those, and doesn't invent its own |
 | `unrelated-request-no-skill` | A plain coding request doesn't trigger any founder skill |
 
-The last four cases seed the workspace first, from `fixture.sh` in the case directory, so they need `--scaffold`. Two of them copy the real output in `examples/restaurant-inventory/` and rewrite its dates to today, so the saved prices stay inside the 30 day window the pricing skill re-checks after.
+The last five cases seed the workspace first, from `fixture.sh` in the case directory, so they need `--scaffold`. Two of them copy the real output in `examples/restaurant-inventory/` and rewrite its dates to today, so the saved prices stay inside the 30 day window the pricing skill re-checks after.
 
 ## Run them
 
@@ -47,10 +48,11 @@ claude plugin eval . --case pitch-deck-asks-before-inventing --runs 1 --ablation
 | unrelated-request-no-skill | 1.00 | 1.00 | 0.00 |
 | uses-saved-facts-without-reasking | 1.00 | 1.00 | 0.00 |
 | input-overrides-saved-fact | 1.00 | 0.83 | +0.17 |
+| landing-page-matches-saved-prices | 1.00 | 1.00 | 0.00 |
 
 **One case separates the arms on Opus 5: `input-overrides-saved-fact`, at Δ +0.17.** When the founder states an MRR that contradicts the saved one, both arms use the new number and both mention the old one. The difference is the ledger: with the plugin, all 3 runs wrote the new figure into `founder/facts.md`, and without it, none of the 3 did. The next session that reads that file gets the stale number.
 
-**On the other seven cases the plugin changes nothing these cases can measure.** Plain Claude keeps the placeholders, says a fake competitor is fake, reads the files sitting in `founder/`, and asks before inventing a company. What the plugin still does is make that the default every time, in the same structure, saved to the same place. That is worth something, and it is not what these graders measure.
+**On the other eight cases the plugin changes nothing these cases can measure.** Plain Claude keeps the placeholders, says a fake competitor is fake, reads the files sitting in `founder/`, and asks before inventing a company. What the plugin still does is make that the default every time, in the same structure, saved to the same place. That is worth something, and it is not what these graders measure.
 
 It also costs more. Per run, with the plugin against without:
 
@@ -71,6 +73,7 @@ Same suite, same day, `--model haiku`, $2.89 for all 42 runs.
 | reuses-saved-competitor-prices | 0.60 | 0.40 | +0.20 |
 | uses-saved-facts-without-reasking | 0.17 | 0.00 | +0.17 |
 | input-overrides-saved-fact | 0.33 | 0.33 | 0.00 |
+| landing-page-matches-saved-prices | 0.04 | 0.00 | +0.04 |
 | partial-numbers-stay-placeholders | 1.00 | 1.00 | 0.00 |
 | pitch-deck-asks-before-inventing | 1.00 | 1.00 | 0.00 |
 | unknown-competitor-not-invented | 1.00 | 1.00 | 0.00 |
@@ -81,6 +84,10 @@ Mean Δ +0.09. On the weaker model the rules do carry weight: every Haiku run wi
 **On Haiku the skills often don't fire at all.** In all 3 runs of `input-overrides-saved-fact`, Haiku answered in a single turn without invoking any skill, so the plugin never got to apply its rules. One of those runs then used the stale $2,100 as "average customer value per fleet", which is the exact mistake the ledger rule exists to prevent.
 
 Invoked by name, the rule does land on Haiku. Running `/founder:pitch-deck` with the same prompt, Haiku replied: "your product brief from earlier shows $2,100 MRR, but you just crossed $6,400 last week with three bigger fleets signing. I'm using $6,400 as the current number." It then asked whether the deck is live or sent ahead and stopped there, so it never reached the slide or the ledger. If you run these skills on Haiku, call them by name rather than describing the task.
+
+**`landing-page-matches-saved-prices` fails in both arms on Haiku, and its runs disagree with each other.** Asked for a pricing section with the decided prices sitting in `founder/pricing-strategy.md`, Haiku asked the founder what the tiers should be instead of opening the file, in 5 of 6 runs. One early without-plugin run did read it and scored 1.00, which pulled that arm to 0.33 before a re-run put both arms near zero. With 3 runs per arm, a single case score on Haiku is not worth quoting on its own.
+
+One of those runs invoked the skill and then said "the skill path points to a different directory than your current project", which suggests the `${CLAUDE_PLUGIN_ROOT}` reference in every skill reads as an obstacle to a smaller model rather than a file to open.
 
 The plugin doesn't rescue Haiku, though. `uses-saved-facts-without-reasking` scores 0.17 with the plugin, because Haiku reads `founder/facts.md` and still asks for facts that are in it.
 
@@ -96,8 +103,8 @@ Four of the five failures this suite has produced were grader bugs, not plugin b
 - **The plugin saves to `founder/` and replies with a summary**, while plain Claude puts everything in the reply. Grading only the reply punished the plugin for following its own rules, so the prompts now ask for the full output in the reply, which is what a user would say anyway.
 - **A rubric asked for more than the skill promises.** "Leaves revenue as a placeholder and asks for it" failed a reply that correctly left the placeholder. Grade the promise, nothing extra.
 - **A judge called the copy's own voice a testimonial.** The landing page skill writes pain points in the customer's words on purpose, so the rubric now says those are not testimonials.
+- **An allowlist of permitted prices failed three times in a row.** The pricing rubric listed the prices the saved strategy allows, and the copy kept using others the same file prescribes: the $350 competitor anchor, the $59 founding offer, then the count-app add-on written as "+$60" where the file says "$139 total". Define what counts as a contradiction instead of enumerating what is allowed, and let regex carry the hard check.
 
 ## Cases worth adding
 
-- A second skill run after `pricing-strategy`, checking that the tier prices stay consistent across both files.
 - The same suite on Sonnet, to see where between Haiku and Opus the plugin stops changing the outcome.

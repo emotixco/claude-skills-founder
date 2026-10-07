@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.1.2 · 2026-10-07
+
+- New eval case `landing-page-matches-saved-prices`: with the tiers already decided in `founder/pricing-strategy.md`, the landing page copy has to quote $79 and $189 rather than invent its own. Opus 5 passes with and without the plugin, 3 runs each.
+- `shared/conventions.md` now says to read the skill's "Reads" files before asking the founder anything, and to say what was found there. The evals caught Haiku asking what the tiers should be while the decided prices sat unopened in `founder/`.
+- `evals/README.md` records that this case fails in both arms on Haiku 4.5, that its per-arm scores moved from 0.33 to 0.00 between runs, and that a single Haiku case score at 3 runs is not worth quoting alone.
+
 ## 2.1.1 · 2026-10-07
 
 - New eval case `input-overrides-saved-fact`: the founder states an MRR that contradicts `founder/facts.md`, so the new number has to win, the reply has to say what it replaces, and the ledger has to be updated. On Opus 5 this is the one case where the plugin beats plain Claude, Δ +0.17, because without it the stale number stays in `founder/facts.md` in every run.
