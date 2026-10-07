@@ -1,0 +1,10 @@
+schema_version: "1.1"
+name: reuses-saved-competitor-prices
+description: With a competitor matrix already saved in founder/, pricing should reuse those sourced prices instead of searching the web again.
+tags: [chaining, sourcing]
+context:
+  scaffold_script: fixture.sh
+execution:
+  max_turns: 30
+  timeout_seconds: 900
+  allowed_tools: [Read, Glob, Grep, Skill]

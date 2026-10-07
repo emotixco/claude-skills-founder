@@ -1,6 +1,6 @@
 ---
 name: pitch-deck
-description: Outline a 12-slide investor pitch deck with a takeaway headline, content, visual, and speaker notes for every slide, plus appendix slides for Q&A. Use when a founder is preparing a deck for a raise.
+description: Outline a 12-slide investor pitch deck with a takeaway headline, content, visual, and speaker notes for every slide, plus appendix slides for Q&A. Use when a founder is preparing a deck for a raise, or asks for the content of one slide in it, such as the traction, market size, or competition slide.
 argument-hint: "[your startup, what you're raising, and key metrics]"
 allowed-tools: Read Edit(founder/**) WebSearch WebFetch
 ---

@@ -1,0 +1,10 @@
+schema_version: "1.1"
+name: uses-saved-facts-without-reasking
+description: The facts the founder already stated are saved in founder/facts.md, so the deck should use them instead of asking again.
+tags: [chaining, missing-input]
+context:
+  scaffold_script: fixture.sh
+execution:
+  max_turns: 20
+  timeout_seconds: 600
+  allowed_tools: [Read, Glob, Grep, Skill]
