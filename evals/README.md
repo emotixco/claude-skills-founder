@@ -12,6 +12,7 @@ Each case checks one promise the plugin makes. `claude plugin eval` runs every c
 | `uses-saved-facts-without-reasking` | Facts already in `founder/facts.md` are used, not asked for a second time |
 | `input-overrides-saved-fact` | The founder states an MRR that contradicts `founder/facts.md`. The new number wins, the reply says which saved fact it replaces, and the ledger is updated |
 | `landing-page-matches-saved-prices` | Pricing already decided $79 and $189 tiers. The landing page copy quotes those, and doesn't invent its own |
+| `reads-the-shared-rules` | A skill opens `${CLAUDE_PLUGIN_ROOT}/shared/conventions.md` and follows two rules that live only there: the saved file's header format, and no em dashes |
 | `unrelated-request-no-skill` | A plain coding request doesn't trigger any founder skill |
 
 The last five cases seed the workspace first, from `fixture.sh` in the case directory, so they need `--scaffold`. Two of them copy the real output in `examples/restaurant-inventory/` and rewrite its dates to today, so the saved prices stay inside the 30 day window the pricing skill re-checks after.
@@ -49,8 +50,11 @@ claude plugin eval . --case pitch-deck-asks-before-inventing --runs 1 --ablation
 | uses-saved-facts-without-reasking | 1.00 | 1.00 | 0.00 |
 | input-overrides-saved-fact | 1.00 | 0.83 | +0.17 |
 | landing-page-matches-saved-prices | 1.00 | 1.00 | 0.00 |
+| reads-the-shared-rules | 1.00 | 0.11 | +0.89 |
 
 **One case separates the arms on Opus 5: `input-overrides-saved-fact`, at Δ +0.17.** When the founder states an MRR that contradicts the saved one, both arms use the new number and both mention the old one. The difference is the ledger: with the plugin, all 3 runs wrote the new figure into `founder/facts.md`, and without it, none of the 3 did. The next session that reads that file gets the stale number.
+
+`reads-the-shared-rules` is the largest Δ in the suite, and part of it is tautological: saving to `founder/persona-gen.md` with a particular header is a rule only the plugin states, so plain Claude cannot pass that grader. The part that is not tautological is the dash rule, which lives in the same file: 2 of 3 runs without the plugin put em dashes in the personas, and 0 of 3 with it did.
 
 **On the other eight cases the plugin changes nothing these cases can measure.** Plain Claude keeps the placeholders, says a fake competitor is fake, reads the files sitting in `founder/`, and asks before inventing a company. What the plugin still does is make that the default every time, in the same structure, saved to the same place. That is worth something, and it is not what these graders measure.
 
@@ -74,6 +78,7 @@ Same suite, same day, `--model haiku`, $2.89 for all 42 runs.
 | uses-saved-facts-without-reasking | 0.17 | 0.00 | +0.17 |
 | input-overrides-saved-fact | 0.33 | 0.33 | 0.00 |
 | landing-page-matches-saved-prices | 0.04 | 0.00 | +0.04 |
+| reads-the-shared-rules | 0.00 | 0.00 | 0.00 |
 | partial-numbers-stay-placeholders | 1.00 | 1.00 | 0.00 |
 | pitch-deck-asks-before-inventing | 1.00 | 1.00 | 0.00 |
 | unknown-competitor-not-invented | 1.00 | 1.00 | 0.00 |
@@ -88,6 +93,10 @@ Invoked by name, the rule does land on Haiku. Running `/founder:pitch-deck` with
 **`landing-page-matches-saved-prices` fails in both arms on Haiku, and its runs disagree with each other.** Asked for a pricing section with the decided prices sitting in `founder/pricing-strategy.md`, Haiku asked the founder what the tiers should be instead of opening the file, in 5 of 6 runs. One early without-plugin run did read it and scored 1.00, which pulled that arm to 0.33 before a re-run put both arms near zero. With 3 runs per arm, a single case score on Haiku is not worth quoting on its own.
 
 One of those runs invoked the skill and then said "the skill path points to a different directory than your current project", which suggests the `${CLAUDE_PLUGIN_ROOT}` reference in every skill reads as an obstacle to a smaller model rather than a file to open.
+
+**On Haiku the shared rules never load at all.** `reads-the-shared-rules` scores 0.00 in both arms, and the reason is in its indicator grader: with the plugin loaded, Haiku opened `${CLAUDE_PLUGIN_ROOT}/shared/conventions.md` in 0 of 3 runs. The skill itself fired in 2 of those 3, so the instruction to read the file was in front of it and went unused. Nothing in `shared/conventions.md` applied: no `founder/` file was written in any run, and every run used em dashes.
+
+That is a design finding rather than a prompt bug. Every skill in this plugin keeps its shared rules one Read away, which a strong model does without being pushed and a small model skips. The fix to measure next is inlining the handful of rules that matter into each `SKILL.md`, with `shared/conventions.md` kept as the long form, and then re-running this case on Haiku to see whether the rules start landing.
 
 The plugin doesn't rescue Haiku, though. `uses-saved-facts-without-reasking` scores 0.17 with the plugin, because Haiku reads `founder/facts.md` and still asks for facts that are in it.
 
