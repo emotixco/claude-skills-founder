@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.1.1 · 2026-10-07
+
+- New eval case `input-overrides-saved-fact`: the founder states an MRR that contradicts `founder/facts.md`, so the new number has to win, the reply has to say what it replaces, and the ledger has to be updated. On Opus 5 this is the one case where the plugin beats plain Claude, Δ +0.17, because without it the stale number stays in `founder/facts.md` in every run.
+- `evals/README.md` records that on Haiku 4.5 the skills frequently do not fire from a described task, and that calling them by name works.
+
 ## 2.1.0 · 2026-10-07
 
 - Three new eval cases, two of which seed `founder/` first to test whether skills reuse saved work: `reuses-saved-competitor-prices`, `uses-saved-facts-without-reasking`, and `partial-numbers-stay-placeholders`. They need `--scaffold`.
