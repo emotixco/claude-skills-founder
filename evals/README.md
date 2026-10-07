@@ -96,7 +96,11 @@ One of those runs invoked the skill and then said "the skill path points to a di
 
 **On Haiku the shared rules never load at all.** `reads-the-shared-rules` scores 0.00 in both arms, and the reason is in its indicator grader: with the plugin loaded, Haiku opened `${CLAUDE_PLUGIN_ROOT}/shared/conventions.md` in 0 of 3 runs. The skill itself fired in 2 of those 3, so the instruction to read the file was in front of it and went unused. Nothing in `shared/conventions.md` applied: no `founder/` file was written in any run, and every run used em dashes.
 
-That is a design finding rather than a prompt bug. Every skill in this plugin keeps its shared rules one Read away, which a strong model does without being pushed and a small model skips. The fix to measure next is inlining the handful of rules that matter into each `SKILL.md`, with `shared/conventions.md` kept as the long form, and then re-running this case on Haiku to see whether the rules start landing.
+The obvious reading is that the rules fail because they sit one Read away. That reading is wrong, and it was tested. The nine core rules were inlined into all 13 `SKILL.md` files, so Haiku had them in context with nothing to open, and the case scored 0.00 again: no `founder/` file in any run, em dashes in every run. Haiku does not skip the rules because of where they live. It skips them because they are rules.
+
+The inlining was not shipped. Nothing measured improved: Opus 5 held at 1.00, which it already was, and Haiku stayed at 0.00. Runs after the change used fewer turns, but the `shared/conventions.md` rule about reading before asking had changed in the same window, so that drop cannot be credited to inlining. Carrying the same nine rules in 13 files needs a measured reason, and there wasn't one.
+
+If you want to try again, the thing to change is not where the rules are. It is how much a small model is asked to carry at once. A smaller skill with two rules in it, measured on Haiku, would answer that.
 
 The plugin doesn't rescue Haiku, though. `uses-saved-facts-without-reasking` scores 0.17 with the plugin, because Haiku reads `founder/facts.md` and still asks for facts that are in it.
 
@@ -112,6 +116,7 @@ Four of the five failures this suite has produced were grader bugs, not plugin b
 - **The plugin saves to `founder/` and replies with a summary**, while plain Claude puts everything in the reply. Grading only the reply punished the plugin for following its own rules, so the prompts now ask for the full output in the reply, which is what a user would say anyway.
 - **A rubric asked for more than the skill promises.** "Leaves revenue as a placeholder and asks for it" failed a reply that correctly left the placeholder. Grade the promise, nothing extra.
 - **A judge called the copy's own voice a testimonial.** The landing page skill writes pain points in the customer's words on purpose, so the rubric now says those are not testimonials.
+- **A judge read "setup takes minutes" as an invented proof number.** The rubric was about numbers, so it now says qualitative product claims are outside it. The run before and the three after all passed on copy of the same shape, which is what a borderline rubric looks like.
 - **An allowlist of permitted prices failed three times in a row.** The pricing rubric listed the prices the saved strategy allows, and the copy kept using others the same file prescribes: the $350 competitor anchor, the $59 founding offer, then the count-app add-on written as "+$60" where the file says "$139 total". Define what counts as a contradiction instead of enumerating what is allowed, and let regex carry the hard check.
 
 ## Cases worth adding
