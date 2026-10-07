@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.1.3 · 2026-10-07
+
+- New eval case `reads-the-shared-rules`: does a skill actually open `${CLAUDE_PLUGIN_ROOT}/shared/conventions.md` and follow two rules that live only there, the saved file header and the no-dash rule.
+- The case found that on Haiku 4.5 the shared rules never load: with the plugin, Haiku opened the file in 0 of 3 runs, wrote no `founder/` file, and used em dashes in every run. On Opus 5 the same case is 1.00 against 0.11 without the plugin. `evals/README.md` has the detail and the fix worth measuring next.
+
 ## 2.1.2 · 2026-10-07
 
 - New eval case `landing-page-matches-saved-prices`: with the tiers already decided in `founder/pricing-strategy.md`, the landing page copy has to quote $79 and $189 rather than invent its own. Opus 5 passes with and without the plugin, 3 runs each.
