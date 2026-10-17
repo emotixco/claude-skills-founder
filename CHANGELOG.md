@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.1.7 · 2026-10-17
+
+- Adds the Skills Directory security badge to the README. Their scanner graded the skills A, 100 of 100, and the badge re-reads that grade on every scan rather than freezing today's result.
+
 ## 2.1.5 · 2026-10-17
 
 - Adds a plugin icon, a 1024px square built from the same terminal mark and brand gradient as the README banner. The Claude plugin directory reads the icon once, at first submission, so it has to exist before the plugin is submitted. The vector source sits beside the banner in the assets folder.
