@@ -2,7 +2,7 @@
 
 ## 2.1.5 · 2026-10-17
 
-- Adds `.claude-plugin/icon.png`, a 1024px square built from the same terminal mark and brand gradient as the README banner. The Claude plugin directory reads the icon once, at first submission, so it has to exist before the plugin is submitted. The source is `assets/icon.svg`.
+- Adds a plugin icon, a 1024px square built from the same terminal mark and brand gradient as the README banner. The Claude plugin directory reads the icon once, at first submission, so it has to exist before the plugin is submitted. The vector source sits beside the banner in the assets folder.
 
 ## 2.1.4 · 2026-10-07
 
