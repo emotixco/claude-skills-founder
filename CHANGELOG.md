@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.1.5 · 2026-10-17
+
+- Adds `.claude-plugin/icon.png`, a 1024px square built from the same terminal mark and brand gradient as the README banner. The Claude plugin directory reads the icon once, at first submission, so it has to exist before the plugin is submitted. The source is `assets/icon.svg`.
+
 ## 2.1.4 · 2026-10-07
 
 - Records a change that was tried and not shipped: inlining the nine core rules into all 13 skills, so a small model would not have to open `shared/conventions.md`. Haiku 4.5 scored 0.00 on `reads-the-shared-rules` either way, writing no `founder/` file and using em dashes in every run with the rules in its context, and Opus 5 held at 1.00. Fewer turns were seen afterwards, but a conventions change landed in the same window, so that cannot be credited to inlining. `evals/README.md` says where to look next instead.

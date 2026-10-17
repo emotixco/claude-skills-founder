@@ -1,0 +1,31 @@
+<svg width="1024" height="1024" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1024" y2="1024" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#f1f1fb"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="232" y1="300" x2="792" y2="724" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#6172f3"/>
+      <stop offset="100%" stop-color="#8b5cf6"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="512" cy="512" r="400" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#6172f3" stop-opacity="0.12"/>
+      <stop offset="100%" stop-color="#6172f3" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="1024" height="1024" fill="url(#bg)"/>
+  <rect width="1024" height="1024" fill="url(#glow)"/>
+
+  <g opacity="0.05">
+    <line x1="0" y1="256" x2="1024" y2="256" stroke="#000" stroke-width="2"/>
+    <line x1="0" y1="768" x2="1024" y2="768" stroke="#000" stroke-width="2"/>
+    <line x1="256" y1="0" x2="256" y2="1024" stroke="#000" stroke-width="2"/>
+    <line x1="768" y1="0" x2="768" y2="1024" stroke="#000" stroke-width="2"/>
+  </g>
+
+  <rect x="232" y="300" width="560" height="424" rx="56" fill="none" stroke="url(#accent)" stroke-width="28"/>
+  <g fill="#5b6cf0">
+    <text x="512" y="556" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="196" font-weight="600" text-anchor="middle" letter-spacing="6">$_</text>
+  </g>
+</svg>
