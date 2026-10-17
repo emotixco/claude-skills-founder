@@ -26,6 +26,7 @@
 <a href="#skills"><img src="https://img.shields.io/badge/skills-13-blue?style=flat-square&labelColor=18181b&color=8b5cf6" alt="13 Skills" /></a>
 <a href="https://docs.anthropic.com/en/docs/claude-code"><img src="https://img.shields.io/badge/Claude_Code-compatible-blue?style=flat-square&labelColor=18181b&color=d4a574" alt="Claude Code" /></a>
 <a href="https://github.com/emotixco/claude-skills-founder/stargazers"><img src="https://img.shields.io/github/stars/emotixco/claude-skills-founder?style=flat-square&labelColor=18181b&color=6172f3" alt="GitHub Stars" /></a>
+<a href="https://www.skillsdirectory.com/skills/emotixco-validate-idea"><img src="https://www.skillsdirectory.com/api/skills/emotixco-validate-idea/badge" alt="Security grade A on Skills Directory" /></a>
 
 </div>
 
