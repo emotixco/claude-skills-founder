@@ -1,0 +1,7 @@
+# Marks Skills and Eval Markdown files under GitHub Linguist
+skills/**/*.md linguist-detectable
+evals/**/*.md linguist-detectable
+
+# Flag README files as documentation (not included in the GitHub Linguist count)
+README.md linguist-documentation
+evals/README.md linguist-documentation
