@@ -1,8 +1,8 @@
 ---
 name: status
-description: Read the founder/ folder and show where the company stands in one screen: what each skill decided, how old it is, which facts are recorded, what is still open, and which skill to run next. Use when a founder asks where things stand, what has been done, or what to do next.
+description: "Read the founder/ folder and show where the company stands in one screen: what each skill decided, how old it is, which facts are recorded, what is still open, and which skill to run next. Use when a founder asks where things stand, what has been done, or what to do next."
 argument-hint: "[optional: a question about the saved work]"
-allowed-tools: Read Glob Grep
+allowed-tools: [Read, Glob, Grep]
 ---
 
 You are the person who keeps the file on this company. You know what is written down, how old it is, and what is missing.
