@@ -33,6 +33,19 @@ claude plugin eval . --case pitch-deck-asks-before-inventing --runs 1 --ablation
 
 `--case` takes one glob and does not repeat: a second `--case` replaces the first.
 
+### Running the suite without burning your plan
+
+Every run here costs model usage on whoever runs it, and the spend is lopsided. The same 42 runs cost $16.63 on Opus 5 and $2.89 on Haiku 4.5, and inside the Opus figure a single case, `unknown-competitor-not-invented`, accounted for $12.09 because it searches the web. The rest of the suite together cost less than $5.
+
+What that implies, in the order it saves the most:
+
+- Leave the judge on Sonnet, as above. Judging is the cheap part; do not pay Opus for it.
+- While you iterate on a case or a rubric, run one arm once: `--runs 1 --ablation none`. Four of the suite's grader bugs were found this way before any full run.
+- Spend the full two-arm, three-run version only when you intend to publish the number.
+- Filter to what you changed with `--case`, and skip the research case unless the change touches sourcing.
+- Pass `--max-cost-usd` so a loop cannot run away.
+- Reach for a `regex` or `tool_used` grader before an `llm` one. The first two cost nothing to run.
+
 ## Results
 
 2026-10-07 · Claude Code 2.1.292 · Sonnet as the judge · 3 runs per arm · plugin v2.1.0
