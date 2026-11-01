@@ -1,0 +1,1 @@
+Where do we stand?

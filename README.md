@@ -23,7 +23,7 @@
 <br />
 
 <a href="./LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue?style=flat-square&labelColor=18181b&color=6172f3" alt="MIT License" /></a>
-<a href="#skills"><img src="https://img.shields.io/badge/skills-13-blue?style=flat-square&labelColor=18181b&color=8b5cf6" alt="13 Skills" /></a>
+<a href="#skills"><img src="https://img.shields.io/badge/skills-14-blue?style=flat-square&labelColor=18181b&color=8b5cf6" alt="14 Skills" /></a>
 <a href="https://docs.anthropic.com/en/docs/claude-code"><img src="https://img.shields.io/badge/Claude_Code-compatible-blue?style=flat-square&labelColor=18181b&color=d4a574" alt="Claude Code" /></a>
 <a href="https://github.com/emotixco/claude-skills-founder/stargazers"><img src="https://img.shields.io/github/stars/emotixco/claude-skills-founder?style=flat-square&labelColor=18181b&color=6172f3" alt="GitHub Stars" /></a>
 <a href="https://www.skillsdirectory.com/skills/emotixco-validate-idea"><img src="https://www.skillsdirectory.com/api/skills/emotixco-validate-idea/badge" alt="Security grade A on Skills Directory" /></a>
@@ -80,6 +80,7 @@ We built these at [Emotix](https://emotix.co?utm_source=github&utm_medium=oss&ut
 | `/pitch-deck` | 12-slide outline with per-slide content |
 | `/fundraise-prep` | Readiness assessment + investor targeting + 12-week timeline |
 | `/metrics-dashboard` | The 5 metrics that actually matter at your stage |
+| `/status` | Where the company stands, read back from the `founder/` folder |
 
 </td>
 </tr>
@@ -299,6 +300,15 @@ Interview script that follows The Mom Test: no leading questions, no hypothetica
 <br />
 
 Defines exactly 5 metrics tailored to your stage (not 15 vanity metrics). Each has a definition, target, and specific action if below target. Weekly review template + investor-ready benchmarks.
+
+</details>
+
+<details>
+<summary><strong>/status</strong> · where things stand</summary>
+
+<br />
+
+Reads the `founder/` folder and answers "where are we" in one screen: what each skill decided and how long ago, the facts on record, what is still open, what has gone stale, and which skill to run next. It writes nothing, and it says nothing the folder does not say.
 
 </details>
 
