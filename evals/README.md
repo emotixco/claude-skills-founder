@@ -13,6 +13,7 @@ Each case checks one promise the plugin makes. `claude plugin eval` runs every c
 | `input-overrides-saved-fact` | The founder states an MRR that contradicts `founder/facts.md`. The new number wins, the reply says which saved fact it replaces, and the ledger is updated |
 | `landing-page-matches-saved-prices` | Pricing already decided $79 and $189 tiers. The landing page copy quotes those, and doesn't invent its own |
 | `reads-the-shared-rules` | A skill opens `${CLAUDE_PLUGIN_ROOT}/shared/conventions.md` and follows two rules that live only there: the saved file's header format, and no em dashes |
+| `status-reports-the-folder` | With one fresh file and one 60 days old in `founder/`, `/founder:status` reports what is saved, flags the stale prices, names a next step, and writes nothing |
 | `unrelated-request-no-skill` | A plain coding request doesn't trigger any founder skill |
 
 The last five cases seed the workspace first, from `fixture.sh` in the case directory, so they need `--scaffold`. Two of them copy the real output in `examples/restaurant-inventory/` and rewrite its dates to today, so the saved prices stay inside the 30 day window the pricing skill re-checks after.
@@ -136,6 +137,7 @@ Four of the five failures this suite has produced were grader bugs, not plugin b
 - **A rubric asked for more than the skill promises.** "Leaves revenue as a placeholder and asks for it" failed a reply that correctly left the placeholder. Grade the promise, nothing extra.
 - **A judge called the copy's own voice a testimonial.** The landing page skill writes pain points in the customer's words on purpose, so the rubric now says those are not testimonials.
 - **A judge read "setup takes minutes" as an invented proof number.** The rubric was about numbers, so it now says qualitative product claims are outside it. The run before and the three after all passed on copy of the same shape, which is what a borderline rubric looks like.
+- **The same mistake again, on the status case.** A rubric that listed what the reply should contain failed three runs of a reply that did contain it. Rewritten to name the three ways it could fail, the same two replies passed. If a rubric fails output you would have accepted, suspect the rubric first.
 - **An allowlist of permitted prices failed three times in a row.** The pricing rubric listed the prices the saved strategy allows, and the copy kept using others the same file prescribes: the $350 competitor anchor, the $59 founding offer, then the count-app add-on written as "+$60" where the file says "$139 total". Define what counts as a contradiction instead of enumerating what is allowed, and let regex carry the hard check.
 
 ## Cases worth adding

@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.4.0 · 2026-11-01
+
+- Adds `/founder:status`. It reads the `founder/` folder and answers "where are we" in one screen: what each skill decided and how old that is, the facts on record, the open questions and placeholders, what has gone stale, and which skill to run next. It writes no file, because a saved copy would be wrong as soon as the next skill runs, and it states nothing the folder does not say.
+- Adds the eval case `status-reports-the-folder`, which seeds a folder holding one file written today and one written 60 days ago, then checks that the report flags the stale prices, names a next step, keeps every number matching the files, and leaves no file behind.
+- The suite is now 11 cases and the plugin 14 skills.
+
 ## 2.3.0 · 2026-11-01
 
 - Adds a scheduled benchmark. `.github/workflows/benchmark.yml` re-runs the eval suite and publishes the result to `evals/benchmark.md`, with a history row per run and the losses left in. Weekly it runs the four chaining cases; monthly it runs the whole suite including the expensive web-research case. The agent is pinned to Sonnet and the judge to Haiku so a model rollout is not mistaken for a plugin regression.
