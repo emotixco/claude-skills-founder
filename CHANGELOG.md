@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.2.0 · 2026-11-01
+
+- Adds a gallery: four new worked examples under `examples/`, each one a real chain of skills run in an empty directory with every file it produced, unedited. A UK physiotherapy SaaS, an office coffee subscription in Baku, a solo developer's cozy puzzle game, and one idea the skills told us to kill.
+- Each example lists its cost, turns and time per skill, what to look at, and what could not be verified. All 90 cited links were requested on the day: 72 returned 200, 13 were bot blocks, one was dead and one timed out, and the gallery says which.
+- The physiotherapy example is the readable proof of the `founder/` folder: the pricing skill states that it reused the competitor prices the earlier skill saved, rather than searching again.
+- `evals/README.md` gained a section on running the suite without burning plan usage, with the measured split between models.
+
 ## 2.1.7 · 2026-10-17
 
 - Adds the Skills Directory security badge to the README. Their scanner graded the skills A, 100 of 100, and the badge re-reads that grade on every scan rather than freezing today's result.
