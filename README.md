@@ -184,7 +184,7 @@ Run a skill with no input and it asks for what it needs.
 
 ## Examples
 
-[`examples/restaurant-inventory/`](./examples/restaurant-inventory/) has unedited output from three skills run in sequence on one idea, including the `founder/` files they wrote. Read it before installing to see what you get.
+[`examples/`](./examples/) has five ideas run end to end, with every file the runs produced and nothing edited: a UK physiotherapy SaaS, an office coffee subscription in Baku, a solo developer's puzzle game, a restaurant inventory tool, and one idea the skills told us to kill. Each one lists what it cost and which of its cited links are dead. Read it before installing to see what you get.
 
 [`evals/`](./evals/) tests the plugin against plain Claude with `claude plugin eval`. The honest summary of the latest run: on Opus 5, 8 of 10 cases score the same with and without the plugin, because the model already keeps the placeholders and reads the saved files on its own. The exception is what happens when a new number contradicts a saved one: only the plugin updates `founder/facts.md`, so the next session doesn't inherit the stale figure. On Haiku 4.5 the plugin scores higher on 3 of the 10, the skills often need calling by name, and the shared rules file goes unread, so most of these rules never reach a Haiku session. Full numbers, including per-run cost, are in [`evals/README.md`](./evals/README.md).
 
