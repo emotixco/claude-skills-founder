@@ -33,6 +33,12 @@ claude plugin eval . --case pitch-deck-asks-before-inventing --runs 1 --ablation
 
 `--case` takes one glob and does not repeat: a second `--case` replaces the first.
 
+### The scheduled run
+
+`.github/workflows/benchmark.yml` re-runs the suite and writes the result to [benchmark.md](./benchmark.md), losses included. Weekly it runs the four chaining cases, the ones that carry the plugin's main claim; monthly it runs everything, including the web-research case that costs more than the rest together. Both pin the agent to Sonnet and the judge to Haiku, so a model rollout is not mistaken for a plugin regression, and both pass a cost ceiling.
+
+The workflow does nothing until an `ANTHROPIC_API_KEY` secret exists on the repository. Every run it makes is billed to that key, separately from any Claude plan, so arming it is a deliberate choice rather than a default. You can also start a run by hand from the Actions tab, choosing the model, the case glob and the ceiling.
+
 ### Running the suite without burning your plan
 
 Every run here costs model usage on whoever runs it, and the spend is lopsided. The same 42 runs cost $16.63 on Opus 5 and $2.89 on Haiku 4.5, and inside the Opus figure a single case, `unknown-competitor-not-invented`, accounted for $12.09 because it searches the web. The rest of the suite together cost less than $5.
