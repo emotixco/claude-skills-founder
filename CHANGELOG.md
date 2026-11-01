@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.3.0 · 2026-11-01
+
+- Adds a scheduled benchmark. `.github/workflows/benchmark.yml` re-runs the eval suite and publishes the result to `evals/benchmark.md`, with a history row per run and the losses left in. Weekly it runs the four chaining cases; monthly it runs the whole suite including the expensive web-research case. The agent is pinned to Sonnet and the judge to Haiku so a model rollout is not mistaken for a plugin regression.
+- The workflow does nothing until an `ANTHROPIC_API_KEY` secret exists, because every run is billed to that key rather than to a Claude plan. It can also be started by hand with a model, a case glob and a cost ceiling.
+- `evals/scripts/format_benchmark.py` turns one `--json` result into the page, and marks a run partial when a cost ceiling cut it short.
+
 ## 2.2.0 · 2026-11-01
 
 - Adds a gallery: four new worked examples under `examples/`, each one a real chain of skills run in an empty directory with every file it produced, unedited. A UK physiotherapy SaaS, an office coffee subscription in Baku, a solo developer's cozy puzzle game, and one idea the skills told us to kill.

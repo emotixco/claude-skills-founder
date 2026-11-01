@@ -1,0 +1,141 @@
+name: Benchmark
+
+# Re-measures the plugin against plain Claude and publishes the result to
+# evals/benchmark.md, losses included.
+#
+# Nothing runs until ANTHROPIC_API_KEY is set as a repository secret, because
+# every run here is a real model call billed to that key. The weekly job runs
+# the four chaining cases, which are what the founder/ folder claims to do and
+# are cheap to run. The monthly job runs the whole suite, including the one
+# web-research case that costs more than everything else together.
+
+on:
+  schedule:
+    - cron: "17 6 * * 1"   # Mondays, 06:17 UTC
+    - cron: "17 6 1 * *"   # the 1st of each month, 06:17 UTC
+  workflow_dispatch:
+    inputs:
+      model:
+        description: Agent model under test
+        default: claude-sonnet-5-5
+      label:
+        description: Label for the history row
+        default: manual
+      cases:
+        description: Case glob, empty for the whole suite
+        default: ""
+      max_cost_usd:
+        description: Hard ceiling for the run
+        default: "8"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: benchmark
+  cancel-in-progress: false
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check for the API key
+        id: key
+        env:
+          HAS_KEY: ${{ secrets.ANTHROPIC_API_KEY != '' }}
+        run: |
+          echo "present=$HAS_KEY" >> "$GITHUB_OUTPUT"
+          if [ "$HAS_KEY" != "true" ]; then
+            echo "No ANTHROPIC_API_KEY secret, so there is nothing to bill and nothing to run." >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - uses: actions/setup-node@v4
+        if: steps.key.outputs.present == 'true'
+        with:
+          node-version: "22"
+
+      - name: Install Claude Code
+        if: steps.key.outputs.present == 'true'
+        run: npm install -g @anthropic-ai/claude-code
+
+      - name: Pick the run shape
+        if: steps.key.outputs.present == 'true'
+        id: shape
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "model=${{ inputs.model }}"              >> "$GITHUB_OUTPUT"
+            echo "label=${{ inputs.label }}"              >> "$GITHUB_OUTPUT"
+            echo "cases=${{ inputs.cases }}"              >> "$GITHUB_OUTPUT"
+            echo "cost=${{ inputs.max_cost_usd }}"        >> "$GITHUB_OUTPUT"
+          elif [ "${{ github.event.schedule }}" = "17 6 1 * *" ]; then
+            echo "model=claude-sonnet-5-5" >> "$GITHUB_OUTPUT"
+            echo "label=monthly"           >> "$GITHUB_OUTPUT"
+            echo "cases="                  >> "$GITHUB_OUTPUT"
+            echo "cost=25"                 >> "$GITHUB_OUTPUT"
+          else
+            # Weekly: the chaining cases, which carry the plugin's main claim.
+            echo "model=claude-sonnet-5-5" >> "$GITHUB_OUTPUT"
+            echo "label=weekly"            >> "$GITHUB_OUTPUT"
+            echo "cases=*saved*"           >> "$GITHUB_OUTPUT"
+            echo "cost=8"                  >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Run the suite
+        if: steps.key.outputs.present == 'true'
+        id: eval
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          set +e
+          args=(. --trust-plugin --scaffold --no-publish
+                --json results.json
+                --threshold 0.8
+                --model "${{ steps.shape.outputs.model }}"
+                --judge-model claude-haiku-4-5
+                --max-cost-usd "${{ steps.shape.outputs.cost }}"
+                --allow-tools Write Edit WebSearch WebFetch)
+          if [ -n "${{ steps.shape.outputs.cases }}" ]; then
+            args+=(--case "${{ steps.shape.outputs.cases }}")
+          fi
+          claude plugin eval "${args[@]}"
+          code=$?
+          echo "exit=$code" >> "$GITHUB_OUTPUT"
+          # 0 passed, 1 a case fell below threshold, 2 partial. Only a missing
+          # result file is worth failing the job over: the page reports the rest.
+          test -f results.json
+
+      - name: Write the page
+        if: steps.key.outputs.present == 'true'
+        run: |
+          python3 evals/scripts/format_benchmark.py results.json --label "${{ steps.shape.outputs.label }}"
+          {
+            echo "### Benchmark"
+            echo
+            sed -n '/## Latest run/,/## History/p' evals/benchmark.md | sed '$d'
+            echo "Suite exit code: ${{ steps.eval.outputs.exit }}"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - uses: actions/upload-artifact@v4
+        if: steps.key.outputs.present == 'true'
+        with:
+          name: eval-${{ steps.shape.outputs.label }}-${{ github.run_number }}
+          path: |
+            results.json
+            evals/results/**/report.html
+          retention-days: 30
+
+      - name: Commit the page
+        if: steps.key.outputs.present == 'true'
+        run: |
+          if git diff --quiet -- evals/benchmark.md; then
+            echo "Page unchanged." >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add evals/benchmark.md
+          git commit -m "chore: benchmark ${{ steps.shape.outputs.label }} run $(date -u +%Y-%m-%d)"
+          git push
