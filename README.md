@@ -386,7 +386,7 @@ Have a skill idea? [Open an issue](https://github.com/emotixco/claude-skills-fou
 3. Add the "Before you start" block every skill uses: which `founder/` files it reads, what it needs, and where it saves
 4. Keep the expected output under 2000 words
 5. Test it with 3 different inputs: `claude --plugin-dir .`
-6. Run `claude plugin validate .` before opening the PR
+6. Run `python3 .github/scripts/check_skills.py` and `claude plugin validate .` before opening the PR. The first catches frontmatter the second accepts, such as an unquoted colon in a description
 7. If the skill makes a promise (never invent X, always ask for Y), add a case under `evals/` that checks it
 
 Rules that apply to every skill, such as sourcing and writing style, live in [`shared/conventions.md`](./shared/conventions.md). Change them there, not in each skill.
