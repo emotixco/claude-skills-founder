@@ -16,7 +16,7 @@ import pathlib
 import re
 import sys
 
-DASHES = {"—": "em dash", "–": "en dash"}
+DASHES = {chr(0x2014): "em dash", chr(0x2013): "en dash"}  # written as code points so this file passes its own rule
 TEXT_SUFFIXES = {".md", ".json", ".yml", ".yaml", ".py", ".sh"}
 
 
@@ -70,7 +70,11 @@ def check_dashes(root: pathlib.Path, problems: list[str]) -> None:
     import subprocess
 
     out = subprocess.run(
-        ["git", "ls-files"], cwd=root, capture_output=True, text=True, check=True
+        ["git", "ls-files", "--cached", "--others", "--exclude-standard"],
+        cwd=root,
+        capture_output=True,
+        text=True,
+        check=True,
     ).stdout.split()
     for rel in out:
         p = root / rel
