@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.4.1 · 2026-11-03
+
+- Fixes the frontmatter of `/founder:status`, whose description held an unquoted colon and so was not valid YAML. Thanks to @samkelleher for catching it in #21. Claude Code reads it anyway, but anything stricter, including the directories that index these files, would have read the description as broken.
+- Adds `.github/scripts/check_skills.py` and a Check workflow that runs it on every push and pull request. It parses each skill's frontmatter the way a strict reader would, confirms the name matches its folder and that a description exists, and fails on an em or en dash in a tracked text file outside `examples/`. No model calls, so nothing is billed.
+
 ## 2.4.0 · 2026-11-01
 
 - Adds `/founder:status`. It reads the `founder/` folder and answers "where are we" in one screen: what each skill decided and how old that is, the facts on record, the open questions and placeholders, what has gone stale, and which skill to run next. It writes no file, because a saved copy would be wrong as soon as the next skill runs, and it states nothing the folder does not say.

@@ -1,6 +1,6 @@
 {
   "name": "founder",
-  "version": "2.4.0",
+  "version": "2.4.1",
   "description": "14 skills for startup founders: idea validation, competitor research, pricing, MVP scope, go-to-market, pitch decks, and fundraising. Outputs are saved to founder/ so each skill builds on the last, and /founder:status reads that folder back.",
   "author": {
     "name": "Emotix",
